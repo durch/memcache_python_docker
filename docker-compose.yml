@@ -1,0 +1,27 @@
+version: "2"
+services:
+  mem1:
+    image: memcached:alpine
+    ports:
+      - 11211:11211
+    mem_limit: 1g
+    command: memcached -m 1024m -vv
+  mem2:
+    image: memcached:alpine
+    ports:
+      - 11212:11211
+    mem_limit: 1g
+    command: memcached -m 1024m -vv
+  app:
+    build: .
+    volumes:
+      - .:/code
+    links:
+      - mem1
+      - mem2
+    environment:
+      - MEMCACHED_1_HOST=mem1
+      - MEMCACHED_2_HOST=mem2
+      - MEMCACHED_1_PORT=11211
+      - MEMCACHED_2_PORT=11211
+    command: python test.py

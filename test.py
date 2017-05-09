@@ -42,4 +42,6 @@ except json.decoder.JSONDecodeError:
 assert (client.get('test_list') == ["test", "list"])
 client.replace('test_list', ['list', 'test'])
 assert (client.get('test_list') == ['list', 'test'])
+
+print("--------------")
 print("All is well")
